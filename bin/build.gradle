@@ -1,0 +1,53 @@
+plugins {
+    // Apply the java plugin to add support for Java
+    id 'java'
+
+    // Apply the application plugin to add support for building an application
+    id 'application'
+}
+
+repositories {
+    // Use jcenter for resolving your dependencies.
+    // You can declare any Maven/Ivy/file repository here.
+    jcenter()
+}
+
+dependencies {
+    // Added by default, not sure what it does
+    implementation 'com.google.guava:guava:27.0.1-jre'
+
+    // JUnit 5 test framework
+    testImplementation 'org.junit.jupiter:junit-jupiter-api:5.3.1'
+    testImplementation 'org.junit.jupiter:junit-jupiter-params:5.3.1'
+    testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.3.1'
+
+    // JDA library
+    implementation ('net.dv8tion:JDA:4.BETA.0_33') {
+        exclude module: 'opus-java'  // no audio support
+    }
+
+    // Google APIs
+    implementation 'com.google.api-client:google-api-client:1.23.0'
+    implementation 'com.google.oauth-client:google-oauth-client-jetty:1.23.0'
+    implementation 'com.google.apis:google-api-services-calendar:v3-rev305-1.23.0'
+}
+
+// Define the main class for the application
+mainClassName = 'Harmonizer.App'
+
+// Manifest attributes necessary to run .jar without using Gradle
+jar {
+  manifest {
+    attributes(
+      'Class-Path': configurations.compile.collect { it.getName() }.join(' '),
+      'Main-Class': 'Harmonizer.App'
+    )
+  }
+  from {
+      configurations.runtimeClasspath.collect { it.isDirectory() ? it : zipTree(it) }
+  }
+}
+
+test {
+    useJUnitPlatform()
+}

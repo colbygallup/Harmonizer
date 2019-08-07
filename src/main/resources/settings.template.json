@@ -1,0 +1,5 @@
+{
+    "_comment": "Copy this file into src/main/resources/settings.json and replace the values below.",
+    "calendar_id": "Find this using the Google API explorer",
+    "discord_token": "Client token for your Discord bot"
+}
